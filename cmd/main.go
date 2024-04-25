@@ -1,13 +1,13 @@
 package main
 
 import (
-	"listenbud/middleware"
+	"listenbuddy/internal"
 	"log"
 	"net/http"
 )
 
 func main() {
-	err := middleware.MakeDBConnection()
+	err := internal.MakeDBConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -16,7 +16,7 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	})
 
-	mux.HandleFunc("/createuser", middleware.CreateUser)
+	mux.HandleFunc("/createuser", internal.CreateUser)
 
 	log.Fatal(http.ListenAndServe(":8000", mux))
 }

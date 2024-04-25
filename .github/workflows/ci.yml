@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22"
+          
+      - name: Check out project
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: go test -cover ./...
+
+  security:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22"
+          
+      - name: Check out project 
+        uses: actions/checkout@v3
+
+      - name: Security Checks
+        uses: securego/gosec@master
+        with:
+          args: ./...
+
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22"
+          
+      - name: Check out project 
+        uses: actions/checkout@v3
+
+      - name: Format Checks
+        run: test -z $(gofmt -l .)
+      
+
+
