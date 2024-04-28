@@ -1,17 +1,13 @@
 package main
 
 import (
-	"listenbuddy/internal"
 	"log"
 	"net/http"
+
+	"github.com/jsatof/listenbuddy/internal"
 )
 
 func main() {
-	err := internal.MakeDBConnection()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	})

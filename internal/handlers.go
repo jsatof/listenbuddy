@@ -3,27 +3,49 @@ package internal
 import (
 	"context"
 	"encoding/json"
-	"listenbud/models"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jsatof/listenbuddy/internal/models"
+	"golang.org/x/crypto/bcrypt"
 )
+
+type User = models.User
+type SongRequest = models.SongRequest
 
 var db *pgx.Conn
 
-func MakeDBConnection() error {
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_URL"))
-	if err != nil {
-		log.Fatalf("Unable to connect to database: %v\n", err)
-		return err
-	}
-	db = conn
-	return nil
+func insertSongRequest() {
+
 }
 
-func insertUser(user models.User) int64 {
+func searchSongRequest() {
+
+}
+
+func deleteSongRequest() {
+
+}
+
+func updateSongRequest() {
+
+}
+
+func updateUser() {
+
+}
+
+func deleteUser() {
+
+}
+
+func searchUser() {
+
+}
+
+func insertUser(user User) int64 {
 	_, err := db.Exec(context.Background(), "insert into listenuser (id,username,password) values ($1,$2,$3)", user.ID, user.Username, user.Password)
 	if err != nil {
 		log.Fatalf("Could not insert value (%v,%v)\n%v", user.ID, user.Username, err)
@@ -39,7 +61,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	// create an empty user of type models.User
-	var user models.User
+	var user User
 
 	// decode the json request to user
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -63,4 +85,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// send the response
 	json.NewEncoder(w).Encode(res)
+}
+
+func GenerateHash(s string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(s), bcrypt.DefaultCost)
+	if err != nil {
+		os.Stderr.WriteString(err.Error())
+		return ""
+	}
+
+	return string(hash)
 }
